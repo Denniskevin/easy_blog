@@ -6,10 +6,11 @@
 	"type": "project",
 	"require": {
 		"laravel/framework": "4.2.*",
-        "maxhoffmann/parsedown-laravel": "dev-master"
+		"maxhoffmann/parsedown-laravel": "dev-master"
 	},
 	"require-dev": {
-    	"way/generators": "~2.0"
+    	"way/generators": "~2.0",
+    	"phpunit/phpunit": "3.7.*"
 	},
 	"autoload": {
 		"classmap": [
@@ -19,7 +20,7 @@
 			"app/database/migrations",
 			"app/database/seeds",
 			"app/tests/TestCase.php",
-            "app/Blog"
+			"app/Blog"
 		]
 	},
 	"scripts": {

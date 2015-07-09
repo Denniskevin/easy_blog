@@ -13,7 +13,9 @@
 
 Route::get('/', function()
 {
-	return View::make('index');
+	$articles = Article::with('user', 'tags')->orderBy('created_at', 'desc')->paginate(Config::get('custom.page_size'));
+	$tags = Tag::where('count', '>', '0')->orderBy('count', 'desc')->orderBy('updated_at', 'desc')->take(10)->get();
+	return View::make('index')->with('articles', $articles)->with('tags', $tags);
 });
 
 Route::get('login', function()
@@ -47,7 +49,7 @@ Route::post('login', array('before' => 'csrf', function()
 
 Route::get('home', array('before' => 'auth', function()
 {
-	return View::make('home');
+	return View::make('home')->with('user', Auth::user())->with('articles', Article::with('tags')->where('user_id', '=', Auth::id())->orderBy('created_at', 'desc')->get());
 }));
 
 Route::get('logout', array('before' => 'auth', function()
@@ -60,9 +62,7 @@ Route::get('register', function()
 {
 	return View::make('users.create');
 });
-/**
- * 用户注册
- */
+
 Route::post('register', array('before' => 'csrf', function()
 {
 	$rules = array(
@@ -85,9 +85,7 @@ Route::post('register', array('before' => 'csrf', function()
 		return Redirect::to('register')->withInput()->withErrors($validator);
 	}
 }));
-/**
- * 修改个人信息
- */
+
 Route::get('user/{id}/edit', array('before' => 'auth', 'as' => 'user.edit', function($id)
 {
 	if (Auth::user()->is_admin or Auth::id() == $id) {
@@ -96,9 +94,7 @@ Route::get('user/{id}/edit', array('before' => 'auth', 'as' => 'user.edit', func
 		return Redirect::to('/');
 	}
 }));
-/**
- * 更新错误提示
- */
+
 Route::put('user/{id}', array('before' => 'auth|csrf', function($id)
 {
 	if (Auth::user()->is_admin or (Auth::id() == $id)) {
@@ -131,9 +127,7 @@ Route::put('user/{id}', array('before' => 'auth|csrf', function($id)
 		return Redirect::to('/');
 	}
 }));
-/**
- * 用户组管理
- */
+
 Route::group(array('prefix' => 'admin', 'before' => 'auth|isAdmin'), function()
 {
 	Route::get('users', function()
@@ -141,9 +135,9 @@ Route::group(array('prefix' => 'admin', 'before' => 'auth|isAdmin'), function()
 		return View::make('admin.users.list')->with('users', User::all())->with('page', 'users');
 	});
 
-    Route::get('articles', 'AdminController@articles');
-    Route::get('tags', 'AdminController@tags');
+	Route::get('articles', 'AdminController@articles');
 
+	Route::get('tags', 'AdminController@tags');
 });
 
 Route::model('user', 'User');
@@ -172,38 +166,14 @@ Route::group(array('before' => 'auth|csrf|isAdmin'), function()
 	});
 });
 
-
-/**
- * 文章管理
- */
 Route::post('article/preview', array('before' => 'auth', 'uses' => 'ArticleController@preview'));
 
 Route::resource('article', 'ArticleController');
 
-Route::get('/', function()
-{
-    $articles = Article::with('user', 'tags')->orderBy('created_at', 'desc')->paginate(4);
-    $tags = Tag::where('count', '>', '0')->orderBy('count', 'desc')->orderBy('updated_at', 'desc')->take(4)->get();
-    return View::make('index')->with('articles', $articles)->with('tags', $tags);
-});
-
 Route::get('user/{user}/articles', 'UserController@articles');
-Route::get('home',array('before' => 'auth', function()
-{
-    return View::make('home')->with('user', Auth::user())->with('articles', Article::with('tags')->where('user_id', '=', Auth::id())->orderBy('created_at', 'desc')->get());
-}));
 
-/**
- * 文章更新信息
- */
 Route::post('article/{id}/preview', array('before' => 'auth', 'uses' => 'ArticleController@preview'));
 
-/**
- * 标签管理
- */
 Route::get('tag/{id}/articles', 'TagController@articles');
+
 Route::resource('tag', 'TagController');
-
-
-
-

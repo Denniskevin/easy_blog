@@ -49,6 +49,7 @@ Log::useFiles(storage_path().'/logs/laravel.log');
 App::error(function(Exception $exception, $code)
 {
 	Log::error($exception);
+	return Response::view('error', array(), 500);
 });
 
 /*
@@ -79,3 +80,8 @@ App::down(function()
 */
 
 require app_path().'/filters.php';
+
+App::missing(function($exception)
+{
+	return Response::view('notFound', array(), 404);
+});

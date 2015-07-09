@@ -1,4 +1,4 @@
-@extends('_layouts.default')
+@extends('layouts.default')
 
 @section('main')
   <div class="am-g am-g-fixed">
@@ -15,19 +15,19 @@
         </div>
       @endif
       {{ Form::open(array('url' => 'login', 'class' => 'am-form')) }}
-        {{ Form::label('email', '邮箱') }}
+        {{ Form::label('email', 'E-mail:') }}
         {{ Form::email('email', Input::old('email')) }}
         <br/>
-        {{ Form::label('password', '密码') }}
+        {{ Form::label('password', 'Password:') }}
         {{ Form::password('password') }}
         <br/>
         <label for="remember_me">
           <input id="remember_me" name="remember_me" type="checkbox" value="1">
-          记住密码
+          Remember Me
         </label>
         <br/>
         <div class="am-cf">
-          {{ Form::submit('登录', array('class' => 'am-btn am-btn-primary am-btn-sm am-fl')) }}
+          {{ Form::submit('Login', array('class' => 'am-btn am-btn-primary am-btn-sm am-fl')) }}
         </div>
       {{ Form::close() }}
       <br/>

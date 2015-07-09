@@ -1,4 +1,4 @@
-@extends('_layouts.default')
+@extends('layouts.default')
 
 @section('main')
   <div class="am-g am-g-fixed">
@@ -15,7 +15,7 @@
         </div>
       @endif
       {{ Form::model($user, array('url' => 'user/' . $user->id, 'method' => 'PUT', 'class' => 'am-form')) }}
-        {{ Form::label('email', '邮箱') }}
+        {{ Form::label('email', '邮件') }}
         <input id="email" name="email" type="email" readonly="readonly" value="{{ $user->email }}"/>
         <br/>
         {{ Form::label('nickname', '用户名称') }}

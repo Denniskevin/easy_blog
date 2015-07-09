@@ -4,17 +4,17 @@ use Illuminate\Database\Eloquent\SoftDeletingTrait;
 
 class Article extends \Eloquent {
 
-    use SoftDeletingTrait;
+	use SoftDeletingTrait;
 
-    protected $fillable = ['title', 'content'];
+	protected $fillable = ['title', 'content'];
 
-    public function tags()
-    {
-        return $this->belongsToMany('Tag');
-    }
+	public function tags()
+	{
+		return $this->belongsToMany('Tag');
+	}
 
-    public function user()
-    {
-        return $this->belongsTo('User');
-    }
+	public function user()
+	{
+		return $this->belongsTo('User');
+	}
 }

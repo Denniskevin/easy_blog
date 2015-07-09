@@ -4,12 +4,12 @@ use Illuminate\Database\Eloquent\SoftDeletingTrait;
 
 class Tag extends \Eloquent {
 
-    use SoftDeletingTrait;
+	use SoftDeletingTrait;
 
-    protected $fillable = ['name'];
+	protected $fillable = ['name'];
 
-    public function articles()
-    {
-        return $this->belongsToMany('Article');
-    }
+	public function articles()
+	{
+		return $this->belongsToMany('Article');
+	}
 }

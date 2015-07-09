@@ -1,4 +1,4 @@
-@extends('_layouts.default')
+@extends('layouts.default')
 
 @section('main')
 <div class="am-g am-g-fixed">
@@ -12,10 +12,10 @@
   	<table class="am-table am-table-hover am-table-striped ">
 	  <thead>
 	  <tr>
-	    <th>用户ID</th>
-	    <th>邮箱</th>
-	    <th>用户名</th>
-	    <th>用户管理</th>
+	    <th>ID</th>
+	    <th>E-mail</th>
+	    <th>Nickname</th>
+	    <th>Management</th>
 	  </tr>
 	  </thead>
 	  <tbody>
@@ -23,20 +23,19 @@
 		<tr>
 	  	<td>{{ $user->id }}</td>
 	  	<td>{{ $user->email }}</td>
-	  	{{--<td>{{{ $user->nickname }}}</td>--}}
-            <a href="{{ URL::to('user/' . $user->id . '/articles') }}">{{{ $user->nickname }}}</a>
+	  	<td><a href="{{ URL::to('user/' . $user->id . '/articles') }}">{{{ $user->nickname }}}</a></td>
 	    <td>
-		  <a href="{{ URL::to('user/'. $user->id . '/edit') }}" class="am-btn am-btn-xs am-btn-primary">用户更新</a>
+		  <a href="{{ URL::to('user/'. $user->id . '/edit') }}" class="am-btn am-btn-xs am-btn-primary"><span class="am-icon-pencil"></span> Edit</a>
 		  {{ Form::open(array('url' => 'user/' . $user->id . '/reset', 'method' => 'PUT', 'style' => 'display: inline;')) }}
-		  	<button type="button" class="am-btn am-btn-xs am-btn-warning" id="reset{{ $user->id }}">恢复</button>
+		  	<button type="button" class="am-btn am-btn-xs am-btn-warning" id="reset{{ $user->id }}"><span class="am-icon-mail-reply"></span> Reset</button>
 		  {{ Form::close() }}
 		  @if ($user->block)
 	      {{ Form::open(array('url' => 'user/' . $user->id . '/unblock', 'method' => 'PUT', 'style' => 'display: inline;')) }}
-		  	<button type="button" class="am-btn am-btn-xs am-btn-danger" id="unblock{{ $user->id }}">用户解锁</button>
+		  	<button type="button" class="am-btn am-btn-xs am-btn-danger" id="unblock{{ $user->id }}"><span class="am-icon-unlock"></span> Unblock</button>
 		  {{ Form::close() }}
 		  @else
 		  {{ Form::open(array('url' => 'user/' . $user->id, 'method' => 'DELETE', 'style' => 'display: inline;')) }}
-		  	<button type="button" class="am-btn am-btn-xs am-btn-danger" id="delete{{ $user->id }}">用户锁定</button>
+		  	<button type="button" class="am-btn am-btn-xs am-btn-danger" id="delete{{ $user->id }}"><span class="am-icon-lock"></span> Block</button>
 		  {{ Form::close() }}
 		  @endif
 	    </td>
@@ -60,7 +59,7 @@
 <script>
   $(function() {
     $('[id^=reset]').on('click', function() {
-      $('.am-modal-bd').text('密码变更为123456');
+      $('.am-modal-bd').text('Sure you want to reset the password for 123456?');
       $('#my-confirm').modal({
         relatedTarget: this,
         onConfirm: function(options) {
@@ -72,7 +71,7 @@
     });
 
     $('[id^=delete]').on('click', function() {
-      $('.am-modal-bd').text('锁定用户？');
+      $('.am-modal-bd').text('Sure you want to lock it?');
       $('#my-confirm').modal({
         relatedTarget: this,
         onConfirm: function(options) {
@@ -84,7 +83,7 @@
     });
 
     $('[id^=unblock]').on('click', function() {
-      $('.am-modal-bd').text('解锁用户?');
+      $('.am-modal-bd').text('Sure you want to unlock it?');
       $('#my-confirm').modal({
         relatedTarget: this,
         onConfirm: function(options) {

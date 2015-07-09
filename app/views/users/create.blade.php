@@ -1,4 +1,4 @@
-@extends('_layouts.default')
+@extends('layouts.default')
 
 @section('main')
   <div class="am-g am-g-fixed">
@@ -15,7 +15,7 @@
         </div>
       @endif
       {{ Form::open(array('url' => 'register', 'class' => 'am-form')) }}
-        {{ Form::label('email', '邮箱') }}
+        {{ Form::label('email', '邮件') }}
         {{ Form::email('email', Input::old('email')) }}
         <br/>
         {{ Form::label('nickname', '用户名') }}
@@ -24,7 +24,7 @@
         {{ Form::label('password', '密码') }}
         {{ Form::password('password') }}
         <br/>
-        {{ Form::label('password_confirmation', '确认密码') }}
+        {{ Form::label('password_confirmation', '密码确认') }}
         {{ Form::password('password_confirmation') }}
         <br/>
         <div class="am-cf">
